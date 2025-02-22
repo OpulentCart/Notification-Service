@@ -1,14 +1,14 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/dbConfig');
+const { sequelize } = require('../config/dbConfig');
 
-const Notification = sequelize('Notification', {
+const Notification = sequelize.define('Notification', {
     notification_id: {
-        type: DataTypes.UUID,
-        defaultValue : DataTypes.UUIDV4,
+        type: DataTypes.INTEGER, 
+        autoIncrement: true,
         primaryKey: true
     },
     user_id: {
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: "auth_app_customuser",
@@ -37,8 +37,8 @@ const Notification = sequelize('Notification', {
 // sync model with database
 sequelize.sync({ alter: true})
     .then(() => {
-        console.log("User table created")
+        console.log("Notifications table created")
     })
     .catch(err => console.error("❌ Error creating User table:", err));
-    
+
 module.exports = Notification;
