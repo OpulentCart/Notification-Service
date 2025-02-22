@@ -1,7 +1,7 @@
 const Notification = require('../models/notification');
 
-// send a notification
 module.exports = (io) => {
+    // send a notification
     sendNotification = async(req, res) => {
         try{
             const { user_id, title, message } = req.body;
@@ -23,4 +23,20 @@ module.exports = (io) => {
             });
         }
     };
+
+    // get notifications for a user
+    getUserNotifications = async(req, res) => {
+        try{
+            const { user_id } = req.body;
+            const notifications = await Notification.findAll({ where: { user_id }, order: [["createdAt", "DESC"]] });
+            return res.status(200).json({ notifications });
+        }catch(error){
+            console.error("Error in retreive a notification", error.message);
+            return res.status(500).json({
+                success: false,
+                message: "Failed in retreiving all notification"
+            });
+        }
+    };
+
 }
