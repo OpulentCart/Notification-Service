@@ -2,7 +2,7 @@ const Notification = require('../models/notification');
 
 module.exports = (io) => {
     // send a notification
-    sendNotification = async(req, res) => {
+    const sendNotification = async(req, res) => {
         try{
             const { user_id, title, message } = req.body;
             const notification = await Notification.create({
@@ -10,7 +10,7 @@ module.exports = (io) => {
                 title,
                 message
             });
-            io.emit("newNotification", newNotification);
+            io.emit("newNotification", Notification);
             return res.status(201).json({
                 success: true,
                 message: "Notification added successfully"
@@ -25,7 +25,7 @@ module.exports = (io) => {
     };
 
     // get notifications for a user
-    getUserNotifications = async(req, res) => {
+    const getUserNotifications = async(req, res) => {
         try{
             const { user_id } = req.body;
             const notifications = await Notification.findAll({ where: { user_id }, order: [["createdAt", "DESC"]] });
@@ -38,5 +38,8 @@ module.exports = (io) => {
             });
         }
     };
-
+    return {
+        sendNotification,
+        getUserNotifications
+    };
 }
