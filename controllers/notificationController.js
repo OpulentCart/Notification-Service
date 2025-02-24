@@ -10,7 +10,7 @@ module.exports = (io) => {
                 title,
                 message
             });
-            io.emit("newNotification", Notification);
+            io.emit("newNotification", notification);
             return res.status(201).json({
                 success: true,
                 message: "Notification added successfully"
@@ -27,8 +27,8 @@ module.exports = (io) => {
     // get notifications for a user
     const getUserNotifications = async(req, res) => {
         try{
-            const { user_id } = req.body;
-            const notifications = await Notification.findAll({ where: { user_id }, order: [["createdAt", "DESC"]] });
+            const { id } = req.params;
+            const notifications = await Notification.findAll({ where: { user_id: id }, order: [["createdAt", "DESC"]] });
             return res.status(200).json({ notifications });
         }catch(error){
             console.error("Error in retreive a notification", error.message);
