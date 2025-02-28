@@ -3,6 +3,7 @@ const cors = require("cors");
 const socketIo = require("socket.io");
 const http = require("http");
 const { connectDB } = require("./config/dbConfig");
+const consumeNotifications = require("./config/rabbitmqConsumer");
 require("dotenv").config();
 
 const app = express();
@@ -20,6 +21,9 @@ app.use(express.json());
 
 // connect to the database
 connectDB();
+
+// Start RabbitMQ Consumer
+consumeNotifications(io);
 
 // intialize routes with websockets
 const notificationRoutes = require("./routes/notificationRoutes")(io);

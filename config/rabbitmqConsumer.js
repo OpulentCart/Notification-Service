@@ -1,4 +1,4 @@
-const amqp = require("amqlib");
+const amqp = require("amqplib");
 const Notification = require("../models/notification");
 
 const RABBITMQ_URL = "amqp://localhost";
