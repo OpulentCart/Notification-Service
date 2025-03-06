@@ -1,13 +1,12 @@
 const amqp = require("amqplib");
 const Notification = require("../models/notification");
 
-const RABBITMQ_URL = "amqp://localhost";
 const QUEUE_NAME="notifications";
 
 
 const consumeNotifications = async (io) => {
     try {
-        const connection = await amqp.connect(RABBITMQ_URL);
+        const connection = await amqp.connect(process.env.RABBITMQ_URL);
         const channel = await connection.createChannel();
 
         await channel.assertQueue(QUEUE_NAME, { durable: true });
